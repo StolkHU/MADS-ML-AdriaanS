@@ -1,34 +1,23 @@
 [project]
-name = "mads-deeplearning"
-version = "0.2.0"
-description = ""
-
-authors = [
-    {name = "A. Stolk", email = "adriaan.stolk@student.hu.nl"},
-]
-
-requires-python = ">=3.11,<3.12"
-license = {text = "MIT"}
-
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Typing :: Typed",
-]
+name = "mads-ml-adriaans"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
 
 dependencies = [
     "jupyter>=1.1.1",
     "loguru>=0.7.0",
     "mads-datasets[torch]>=0.3.12",
     "matplotlib>=3.7.1",
+    "plotly>=5.17.0",
+    "pydantic>=1.10.9",
     "seaborn>=0.12.2",
     "tensorboard>=2.15.1",
+    "torch>=2.0.1",
     "torch-tb-profiler>=0.4.3",
     "tomlserializer>=0.2.0",
     "mltrainer>=0.2.2",
-
 ]
 
 [project.optional-dependencies]
@@ -38,7 +27,6 @@ nvim = [
 
 [dependency-groups]
 dev = [
-    "black>=25.1.0",
     "isort>=5.13.2",
     "mypy>=1.14.1",
     "notebooktester>=0.2.1",
