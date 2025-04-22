@@ -28,6 +28,7 @@ dependencies = [
     "torch-tb-profiler>=0.4.3",
     "tomlserializer>=0.2.0",
     "mltrainer>=0.2.2",
+
 ]
 
 [project.optional-dependencies]
@@ -37,6 +38,7 @@ nvim = [
 
 [dependency-groups]
 dev = [
+    "black>=25.1.0",
     "isort>=5.13.2",
     "mypy>=1.14.1",
     "notebooktester>=0.2.1",
