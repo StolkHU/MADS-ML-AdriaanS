@@ -1,0 +1,44 @@
+pre-commit:
+  commands:
+    black:
+      files: git ls-files
+      glob: '*.{py, ipynb}'
+      run: ruff format {staged_files}
+      stage_fixed: true
+    clean-jupyter:
+      files: git ls-files
+      glob: '*.ipynb'
+      run: jupyter nbconvert --clear-output --inplace {staged_files}
+      stage_fixed: true
+    ruff:
+      files: git ls-files
+      glob: '*.py'
+      run: ruff check {staged_files} --fix
+    pyright:
+      files: git ls-files
+      glob: '*.py'
+      run: pyright {staged_files}
+    lychee:
+      run: lychee . --suggest --max-concurrency 32 --cache --format detailed --header "accept=*/*" --max-cache-age 7d
+    notebooktester:
+      glob: '*.ipynb'
+      run: notebooktester notebooks -v -t 240
+
+pre-merge:
+  commands:
+    black:
+      glob: '*.{py, ipynb}'
+      run: ruff fmt {all_files}
+      stage_fixed: true
+    clean-jupyter:
+      glob: '*.ipynb'
+      run: jupyter nbconvert --clear-output --inplace {all_files}
+      stage_fixed: true
+    ruff:
+      glob: '*.py'
+      run: ruff check {all_files} --fix
+    pyright:
+      glob: '*.py'
+      run: pyright {staged_files}
+    lychee:
+      run: lychee . --suggest --max-concurrency 32 --cache --format detailed --header "accept=*/*" --max-cache-age 7d
