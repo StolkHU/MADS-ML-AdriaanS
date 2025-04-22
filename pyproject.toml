@@ -19,21 +19,12 @@ classifiers = [
 ]
 
 dependencies = [
-    "bayesian-optimization==1.5.1",
-    "configspace>=0.7.1",
-    "hyperopt>=0.2.7",
     "jupyter>=1.1.1",
     "loguru>=0.7.0",
     "mads-datasets[torch]>=0.3.12",
     "matplotlib>=3.7.1",
-    "plotly>=5.17.0",
-    "pydantic>=1.10.9",
     "seaborn>=0.12.2",
-    "tokenizers>=0.21.0",
     "tensorboard>=2.15.1",
-    "torch>=2.0.1",
-    "torchinfo>=1.8.0",
-    "torch-geometric>=2.6.1",
     "torch-tb-profiler>=0.4.3",
     "tomlserializer>=0.2.0",
     "mltrainer>=0.2.2",
