@@ -1,13 +1,13 @@
 [model]
 training = true
 num_classes = 10
-units1 = 512
-units2 = 512
-units3 = "None"
+units1 = 128
+units2 = 64
+units3 = 32
 
 [types]
 training = "bool"
 num_classes = "int"
 units1 = "int"
 units2 = "int"
-units3 = "NoneType"
+units3 = "int"

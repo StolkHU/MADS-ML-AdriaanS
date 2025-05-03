@@ -1,8 +1,8 @@
 [model]
 training = true
 num_classes = 10
-units1 = 512
-units2 = 512
+units1 = 128
+units2 = 128
 units3 = "None"
 
 [types]
