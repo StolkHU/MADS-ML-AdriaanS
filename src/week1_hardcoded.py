@@ -1,0 +1,86 @@
+# from mads_datasets import DatasetFactoryProvider, DatasetType
+# from mltrainer.preprocessors import BasePreprocessor
+# from mltrainer import Trainer, TrainerSettings, ReportTypes, metrics
+
+# import torch
+# import torch.optim as optim
+# from torch import nn
+
+# fashionfactory = DatasetFactoryProvider.create_factory(DatasetType.FASHION)
+# preprocessor = BasePreprocessor()
+# streamers = fashionfactory.create_datastreamer(batchsize=64, preprocessor=preprocessor)
+# train = streamers["train"]
+# valid = streamers["valid"]
+# trainstreamer = train.stream()
+# validstreamer = valid.stream()
+
+# accuracy = metrics.Accuracy()
+# loss_fn = torch.nn.CrossEntropyLoss()
+# units = [784, 512, 256, 128, 64]
+
+
+# class NeuralNetwork(nn.Module):
+#     def __init__(
+#         self, num_classes: int, units1: int, units2: int, units3: int = None
+#     ) -> None:
+#         super().__init__()
+#         self.num_classes = num_classes
+#         self.units1 = units1
+#         self.units2 = units2
+#         self.units3 = units3
+#         self.flatten = nn.Flatten()
+#         # Als units3 None is, maak netwerk met 2 hidden layers
+#         if units3 is None:
+#             self.linear_relu_stack = nn.Sequential(
+#                 nn.Linear(28 * 28, units1),
+#                 nn.ReLU(),
+#                 nn.Linear(units1, units2),
+#                 nn.ReLU(),
+#                 nn.Linear(units2, num_classes),
+#             )
+#         # Anders maak netwerk met 3 hidden layers
+#         else:
+#             self.linear_relu_stack = nn.Sequential(
+#                 nn.Linear(28 * 28, units1),
+#                 nn.ReLU(),
+#                 nn.Linear(units1, units2),
+#                 nn.ReLU(),
+#                 nn.Linear(units2, units3),
+#                 nn.ReLU(),
+#                 nn.Linear(units2, units3),
+#                 nn.ReLU(),
+#                 nn.Linear(units3, num_classes),
+#             )
+
+#     def forward(self, x: torch.Tensor) -> torch.Tensor:
+#         x = self.flatten(x)
+#         logits = self.linear_relu_stack(x)
+#         return logits
+
+
+# settings = TrainerSettings(
+#     epochs=10,
+#     metrics=[accuracy],
+#     logdir="modellogs",
+#     train_steps=len(train),
+#     valid_steps=len(valid),
+#     reporttypes=[ReportTypes.TENSORBOARD, ReportTypes.TOML],
+# )
+
+# for unit1 in units:
+#     for unit2 in units:
+#         if unit2 <= unit1:
+#             for unit3 in units:
+#                 if unit3 <= unit2:
+#                     model = NeuralNetwork(num_classes=10, units1=unit1, units2=unit2)
+
+#                     trainer = Trainer(
+#                         model=model,
+#                         settings=settings,
+#                         loss_fn=loss_fn,
+#                         optimizer=optim.Adam,
+#                         traindataloader=trainstreamer,
+#                         validdataloader=validstreamer,
+#                         scheduler=optim.lr_scheduler.ReduceLROnPlateau,
+#                     )
+#                     trainer.loop()
