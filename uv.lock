@@ -1650,16 +1650,19 @@ dependencies = [
     { name = "loguru" },
     { name = "mads-datasets", extra = ["torch"] },
     { name = "matplotlib" },
+    { name = "mlflow" },
     { name = "mltrainer" },
     { name = "path" },
     { name = "plotly" },
     { name = "pydantic" },
     { name = "seaborn" },
     { name = "tensorboard" },
+    { name = "toml" },
     { name = "tomlserializer" },
     { name = "torch" },
     { name = "torch-tb-profiler" },
     { name = "torchinfo" },
+    { name = "torchsummary" },
 ]
 
 [package.optional-dependencies]
@@ -1685,16 +1688,19 @@ requires-dist = [
     { name = "loguru", specifier = ">=0.7.0" },
     { name = "mads-datasets", extras = ["torch"], specifier = ">=0.3.12" },
     { name = "matplotlib", specifier = ">=3.7.1" },
+    { name = "mlflow", specifier = ">=2.21.3" },
     { name = "mltrainer", specifier = ">=0.2.2" },
     { name = "path", specifier = ">=17.1.0" },
     { name = "plotly", specifier = ">=5.17.0" },
     { name = "pydantic", specifier = ">=1.10.9" },
     { name = "seaborn", specifier = ">=0.12.2" },
     { name = "tensorboard", specifier = ">=2.15.1" },
+    { name = "toml", specifier = ">=0.10.2" },
     { name = "tomlserializer", specifier = ">=0.2.0" },
     { name = "torch", specifier = ">=2.0.1" },
     { name = "torch-tb-profiler", specifier = ">=0.4.3" },
     { name = "torchinfo", specifier = ">=1.8.0" },
+    { name = "torchsummary", specifier = ">=1.5.1" },
 ]
 provides-extras = ["nvim"]
 
@@ -3619,6 +3625,15 @@ wheels = [
 ]
 
 [[package]]
+name = "toml"
+version = "0.10.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f", size = 22253, upload_time = "2020-11-01T01:40:22.204Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b", size = 16588, upload_time = "2020-11-01T01:40:20.672Z" },
+]
+
+[[package]]
 name = "tomli"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -3730,6 +3745,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/53/d9/2b811d1c0812e9ef23e6cf2dbe022becbe6c5ab065e33fd80ee05c0cd996/torchinfo-1.8.0.tar.gz", hash = "sha256:72e94b0e9a3e64dc583a8e5b7940b8938a1ac0f033f795457f27e6f4e7afa2e9", size = 25880, upload_time = "2023-05-14T19:23:26.377Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/72/25/973bd6128381951b23cdcd8a9870c6dcfc5606cb864df8eabd82e529f9c1/torchinfo-1.8.0-py3-none-any.whl", hash = "sha256:2e911c2918603f945c26ff21a3a838d12709223dc4ccf243407bce8b6e897b46", size = 23377, upload_time = "2023-05-14T19:23:24.141Z" },
+]
+
+[[package]]
+name = "torchsummary"
+version = "1.5.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/64/aa68ef646bcccab489cac2a85d366559df7d9d24406dbbf3344703cbe33f/torchsummary-1.5.1.tar.gz", hash = "sha256:981bf689e22e0cf7f95c746002f20a24ad26aa6b9d861134a14bc6ce92230590", size = 3749, upload_time = "2018-09-26T05:07:30.226Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7d/18/1474d06f721b86e6a9b9d7392ad68bed711a02f3b61ac43f13c719db50a6/torchsummary-1.5.1-py3-none-any.whl", hash = "sha256:10f41d1743fb918f83293f13183f532ab1bb8f6639a1b89e5f8592ec1919a976", size = 2826, upload_time = "2018-09-26T05:07:28.635Z" },
 ]
 
 [[package]]

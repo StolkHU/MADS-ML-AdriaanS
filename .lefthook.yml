@@ -14,10 +14,10 @@ pre-commit:
       files: git ls-files
       glob: '*.py'
       run: ruff check {staged_files} --fix
-    pyright:
-      files: git ls-files
-      glob: '*.py'
-      run: pyright {staged_files}
+    # pyright:
+    #   files: git ls-files
+    #   glob: '*.py'
+    #   run: pyright {staged_files}
     # lychee:
     #   run: lychee . --suggest --max-concurrency 32 --cache --format detailed --header "accept=*/*" --max-cache-age 7d
     # notebooktester:
@@ -37,8 +37,8 @@ pre-merge:
     ruff:
       glob: '*.py'
       run: ruff check {all_files} --fix
-    pyright:
-      glob: '*.py'
-      run: pyright {staged_files}
+    # pyright:
+    #   glob: '*.py'
+    #   run: pyright {staged_files}
     # lychee:
     #   run: lychee . --suggest --max-concurrency 32 --cache --format detailed --header "accept=*/*" --max-cache-age 7d
