@@ -199,7 +199,7 @@ if __name__ == "__main__":
         fn=objective,
         space=search_space,
         algo=tpe.suggest,
-        max_evals=10,  # Aantal experimenten dat uitgevoerd wordt
+        max_evals=30,  # Aantal experimenten dat uitgevoerd wordt
         trials=trials,
     )
 

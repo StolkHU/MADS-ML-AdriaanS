@@ -115,7 +115,7 @@ def objective(params):
     with mlflow.start_run():
         # Set MLflow tags to record metadata about the model and developer
         mlflow.set_tag("model", "convnet")
-        mlflow.set_tag("dev", "adriaan")
+        mlflow.set_tag("dev", "Adriaan")
         # Log hyperparameters to MLflow
         mlflow.log_params(params)
         mlflow.log_param("batchsize", f"{batchsize}")
@@ -146,69 +146,17 @@ def objective(params):
         logger.info(f"Saving model to {modelpath}")
         torch.save(model, modelpath)
 
-        # NIEUWE CODE: Maak en sla een TOML-configuratiebestand op
-        # Haal best_metric_value uit; we gebruiken alleen de test_loss
-        model_config = {
-            "model": {
-                "name": "CNN",
-                "type": "PyTorch",
-                "architecture": {
-                    "filters": params["filters"],
-                    "units1": params["units1"],
-                    "units2": params["units2"],
-                    "input_channels": model.in_channels,
-                    "input_size": model.input_size,
-                },
-            },
-            "training": {
-                "batchsize": batchsize,
-                "epochs": settings.epochs,
-                "optimizer": "Adam",
-                "loss_function": "CrossEntropyLoss",
-                "device": device,
-                "train_steps": settings.train_steps,
-                "valid_steps": settings.valid_steps,
-            },
-            "performance": {
-                "test_loss": float(trainer.test_loss),
-                # Verwijder de verwijzing naar best_metric_value
-                # "best_accuracy": float(trainer.best_metric_value),
-                "training_time": str(datetime.now()),
-            },
-            "metadata": {
-                "created_at": datetime.now().isoformat(),
-                "mlflow_run_id": mlflow.active_run().info.run_id,
-                "developer": "adriaan",
-            },
-        }
-
-        # Sla het TOML-bestand op
-        toml_path = modeldir / (tag + "config.toml")
-        logger.info(f"Saving model config to {toml_path}")
-        with open(toml_path, "w") as f:
-            toml.dump(model_config, f)
-
-        # Log zowel het model als het TOML-bestand als artifacts in MLflow
-        mlflow.log_artifact(local_path=str(modelpath), artifact_path="pytorch_models")
-        mlflow.log_artifact(local_path=str(toml_path), artifact_path="model_configs")
-
-        # Ook het PyTorch-model registreren met MLflow's ingebouwde functie
-        mlflow.pytorch.log_model(
-            pytorch_model=model,
-            artifact_path="pytorch_model_registry",
-            registered_model_name=f"fashion_cnn_{tag}",
-        )
-
-        return {"loss": trainer.test_loss, "status": STATUS_OK}
-
 
 def main():
     setup_mlflow("mlflow_database")
 
     search_space = {
-        "filters": scope.int(hp.quniform("filters", 16, 128, 8)),
-        "units1": scope.int(hp.quniform("units1", 64, 256, 8)),
-        "units2": scope.int(hp.quniform("units2", 64, 256, 8)),
+        # "filters": scope.int(hp.quniform("filters", 16, 128, 8)),
+        # "units1": scope.int(hp.quniform("units1", 64, 256, 8)),
+        # "units2": scope.int(hp.quniform("units2", 64, 256, 8)),
+        "filters": 128,
+        "units1": 128,
+        "units2": 256,
     }
 
     best_result = fmin(
