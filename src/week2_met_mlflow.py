@@ -1,14 +1,12 @@
 from datetime import datetime
 from pathlib import Path
 from typing import Iterator
-import toml
 
 import mlflow
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
-from hyperopt.pyll import scope
+from hyperopt import Trials, fmin, tpe
 from loguru import logger
 from mads_datasets import DatasetFactoryProvider, DatasetType
 from mltrainer import ReportTypes, Trainer, TrainerSettings, metrics
