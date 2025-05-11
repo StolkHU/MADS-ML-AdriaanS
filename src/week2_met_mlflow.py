@@ -39,27 +39,37 @@ def get_device() -> str:
     return device
 
 
-# There are more models in mltrainer.imagemodels for inspiration.
-# You can import them, or create your own like here.
 class CNN(nn.Module):
-    def __init__(self, filters, units1, units2, input_size=(32, 1, 28, 28)):
+    def __init__(
+        self, filters, units1, units2, dropout_rate=0.25, input_size=(32, 1, 28, 28)
+    ):
         super().__init__()
         self.in_channels = input_size[1]
         self.input_size = input_size
         self.filters = filters
         self.units1 = units1
         self.units2 = units2
+        self.dropout_rate = dropout_rate
 
         self.convolutions = nn.Sequential(
+            # Eerste convolutioneel blok
             nn.Conv2d(self.in_channels, filters, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(filters),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
+            nn.Dropout2d(dropout_rate),
+            # Tweede convolutioneel blok
             nn.Conv2d(filters, filters, kernel_size=3, stride=1, padding=0),
+            nn.BatchNorm2d(filters),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
+            nn.Dropout2d(dropout_rate),
+            # Derde convolutioneel blok
             nn.Conv2d(filters, filters, kernel_size=3, stride=1, padding=0),
+            nn.BatchNorm2d(filters),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
+            nn.Dropout2d(dropout_rate),
         )
 
         activation_map_size = self._conv_test(input_size)
@@ -68,10 +78,17 @@ class CNN(nn.Module):
 
         self.dense = nn.Sequential(
             nn.Flatten(),
+            # Eerste dense laag
             nn.Linear(filters, units1),
+            nn.BatchNorm1d(units1),
             nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            # Tweede dense laag
             nn.Linear(units1, units2),
+            nn.BatchNorm1d(units2),
             nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            # Output laag
             nn.Linear(units2, 10),
         )
 
@@ -114,6 +131,7 @@ def objective(params):
         # Set MLflow tags to record metadata about the model and developer
         mlflow.set_tag("model", "convnet")
         mlflow.set_tag("dev", "Adriaan")
+        mlflow.set_tag("iteration", "batch norm en dropout")
         # Log hyperparameters to MLflow
         mlflow.log_params(params)
         mlflow.log_param("batchsize", f"{batchsize}")
@@ -152,7 +170,7 @@ def main():
         # "filters": scope.int(hp.quniform("filters", 16, 128, 8)),
         # "units1": scope.int(hp.quniform("units1", 64, 256, 8)),
         # "units2": scope.int(hp.quniform("units2", 64, 256, 8)),
-        "filters": 128,
+        "filters": 72,
         "units1": 128,
         "units2": 256,
     }
