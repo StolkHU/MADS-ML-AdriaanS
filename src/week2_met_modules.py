@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Iterator, Dict, Any, List, Optional
+from typing import Iterator, Dict, Any, List
 
 import mlflow
 import torch
