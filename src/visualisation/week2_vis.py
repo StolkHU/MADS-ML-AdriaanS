@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
 # Create the data
@@ -81,7 +80,7 @@ print("=" * 40)
 df["Overfitting_Ratio"] = df["Loss_test"] / df["Loss_train"]
 for idx, row in df.iterrows():
     print(f"{row['Config']:20} : {row['Overfitting_Ratio']:.3f}")
-print(f"\nLower ratio = Better generalization")
+print("\nLower ratio = Better generalization")
 print(
     f"Best generalization: {df.loc[df['Overfitting_Ratio'].idxmin(), 'Config']} (ratio: {df['Overfitting_Ratio'].min():.3f})"
 )
