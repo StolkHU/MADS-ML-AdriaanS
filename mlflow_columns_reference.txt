@@ -1,0 +1,29 @@
+MLflow Database Column Reference
+========================================
+
+Parameters:
+- batchsize
+- dense_units
+- dropout_rate
+- epochs
+- filters
+- filters1
+- filters2
+- filters3
+- filters4
+- kernel_size
+- num_conv_blocks
+- num_conv_layers
+- num_dense_blocks
+- num_dense_layers
+- num_layers
+- optimizer
+- units1
+- units2
+- use_batch_norm
+
+Metrics:
+- Loss/test
+- Loss/train
+- learning_rate
+- metric/Accuracy

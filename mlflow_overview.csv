@@ -1,0 +1,24 @@
+run_uuid,Name,Runtime,Runtime (seconds),Batchsize,filters,units1,units2,Loss/test,Loss/train,Learning_rate,metric/Accuracy,iteration,param_dense_units,param_dropout_rate,param_epochs,param_filters1,param_filters2,param_filters3,param_filters4,param_kernel_size,param_num_conv_blocks,param_num_conv_layers,param_num_dense_blocks,param_num_dense_layers,param_num_layers,param_optimizer,param_use_batch_norm,metric_learning_rate
+7bd03845cd0d4ac78adae68fb02b68e2,clumsy-midge-92,0s,0.12,64,48,,,,,,,48,96,,,,,,,4,,,,,2,,,
+eeea7da399f94822b38f74fc8efd860b,adorable-cat-584,0s,0.69,64,120,,,,,,,120,,,,,,,,5,,,,,5,,,
+e7bd60249b3042208ca5627d1c67b7c3,powerful-auk-789,,,64,104,,,0.54,0.85,0.001,0.8,104,,,,,,,,3,,,,,4,,,0.0
+1d8cb7e6cc8d433eb8715d85fbdac130,intrigued-bat-546,40s,40.24,64,112,40,48,0.75,0.8,0.001,0.72,112,,,,,,,,,,,,,,,,0.0
+c731dc2faab1476cb0bcb9e1f3c42cb9,angry-ape-90,16s,16.16,64,48,32,96,0.77,0.84,0.001,0.72,48,,,,,,,,,,,,,,,,0.0
+49921d172d184de784d2e966530a6e1e,useful-seal-921,13s,13.89,64,40,56,72,0.83,0.88,0.001,0.67,40,,,,,,,,,,,,,,,,0.0
+700f49a10f1548c38a3e8e4ef096d9f4,bold-smelt-501,1m 17s,77.21,64,72,112,120,0.54,0.57,0.001,0.8,72,,,,,,,,,,,,,,,,0.0
+1597ae1f7d5c49efb01be4e3b306e785,rebellious-kite-946,,,64,72,56,128,0.49,0.48,0.001,0.83,72,,,,,,,,,,,,,,,,0.0
+8b21d1eb17874c2eb5c92cd608087ea1,trusting-ray-782,30m 55s,1855.23,64,32,112,88,0.27,0.21,0.001,0.9,32,,,,,,,,,,,,,,,,0.0
+83c68b334d0d4dc8987e1f8a137da0e6,gregarious-chimp-579,1h 50m 27s,6627.87,64,56,88,112,0.28,0.15,0.001,0.91,56,,,,,,,,,,,,,,,,0.0
+18a0821743f340e0bb5c2e1cf09b961a,clean-fowl-329,5s,5.27,64,96,,,,,,,96,,,,,,,,2,,,,,2,,,
+74176b625fff4c98b18526d5cf6cca86,ambitious-shrew-616,,,64,48,,,0.49,0.55,0.001,0.82,48,,,,,,,,3,,,,,5,,,0.0
+c8f94e693bac4e65965d9bd7a8dafaa0,defiant-bat-319,,,64,16,120,232,0.57,0.57,0.001,0.79,16,,,,,,,,,,,,,,,,0.0
+a62727cdba5a4d04b2cbd1460297e946,trusting-fawn-986,15m 21s,921.37,64,16,128,256,0.29,0.25,0.001,0.9,16,,,,,,,,,,,,,,,,0.0
+ea9250601a6d4729a688a52cccb7d502,bright-snipe-707,4h 21m 19s,15679.63,64,72,128,256,0.28,0.11,0.001,0.92,72,,,,,,,,,,,,,,,,0.0
+b6a3fe6440e24f97a1893a10af33cd4b,adaptable-sow-674,10h 1m 54s,36114.62,64,128,128,256,0.32,0.07,0.001,0.91,128,,,,,,,,,,,,,,,,0.0
+dd415247d7ab4d0d89669d47d1aa6f82,peaceful-snail-72,24m 20s,1460.7,64,72,128,256,0.29,0.08,0.001,0.91,72,,,,,,,,,,,,,,,,0.0
+d3ac21c1f410446d85d795e11e32fdda,vaunted-pug-754,1h 44m 38s,6278.89,64,72,128,256,0.25,0.28,0.001,0.91,72,,,,,,,,,,,,,,,,0.0
+afea3878f0964118a71338c2afcb52ae,amazing-midge-667,29m 52s,1792.05,64,72,128,256,0.23,0.25,0.001,0.92,72,,,,,,,,,,,,,,,,0.0
+9489aede6de449399a3ef14bfdead5f7,big-shad-229,0s,0.29,64,,128,64,,,,,big-shad-229,,0.25,20,16,32,64,128,,,4,,2,,Adam,True,
+7b305bbb67c449c59be1dfc52788483e,sedate-shoat-231,45m 22s,2722.69,64,,104,48,0.23,0.09,0.001,0.93,sedate-shoat-231,,0.09850484076798938,25,56,128,112,,,3,,3,,,RMSprop,True,0.0
+52d3f139d44d4e6daa1568fd63333ba6,unique-hen-503,30m 55s,1855.67,64,,208,72,0.21,0.16,0.001,0.93,unique-hen-503,,0.1,10,40,96,216,176,,5,,3,,,Adam,True,0.0
+3dc7385412e649c2a026ada07bbde270,chill-croc-626,33m 28s,2008.29,64,,240,128,0.25,0.32,0.001,0.92,chill-croc-626,,0.1,10,64,112,128,144,,8,,5,,,Adam,True,0.0

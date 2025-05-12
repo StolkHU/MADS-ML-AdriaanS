@@ -245,6 +245,7 @@ def objective(params: Dict[str, Any]) -> float:
         # MLflow metadata
         mlflow.set_tag("model", "flexible_convnet")
         mlflow.set_tag("dev", "Adriaan")
+        mlflow.set_tag("iteration", "8 lagen conv en 5 lagen dense")
         mlflow.log_params(params)
         mlflow.log_param("batchsize", f"{batchsize}")
 
@@ -306,22 +307,30 @@ def main():
     # Hyperparameter zoekruimte
     search_space = {
         # Structuur hyperparameters
-        "num_conv_blocks": scope.int(hp.quniform("num_conv_blocks", 2, 4, 1)),
-        "num_dense_blocks": scope.int(hp.quniform("num_dense_blocks", 1, 3, 1)),
+        # "num_conv_blocks": scope.int(hp.quniform("num_conv_blocks", 2, 4, 1)),
+        # "num_dense_blocks": scope.int(hp.quniform("num_dense_blocks", 1, 3, 1)),
+        "num_conv_blocks": 8,
+        "num_dense_blocks": 5,
         # Convolutionele lagen hyperparameters
         "filters1": scope.int(hp.quniform("filters1", 16, 64, 8)),
         "filters2": scope.int(hp.quniform("filters2", 32, 128, 8)),
         "filters3": scope.int(hp.quniform("filters3", 64, 256, 8)),
+        "filters4": scope.int(hp.quniform("filters4", 128, 512, 8)),
         # Dense lagen hyperparameters
-        "units1": scope.int(hp.quniform("units1", 64, 256, 8)),
-        "units2": scope.int(hp.quniform("units2", 32, 128, 8)),
+        "units1": scope.int(hp.quniform("units1", 128, 256, 8)),
+        "units2": scope.int(hp.quniform("units2", 64, 128, 8)),
         # Regularisatie hyperparameters
-        "use_batch_norm": hp.choice("use_batch_norm", [True, False]),
-        "dropout_rate": hp.uniform("dropout_rate", 0.0, 0.5),
+        # "use_batch_norm": hp.choice("use_batch_norm", [True, False]),
+        # "dropout_rate": hp.uniform("dropout_rate", 0.0, 0.5),
+        "use_batch_norm": True,
+        "dropout_rate": 0.1,
         # Training hyperparameters
-        "batchsize": scope.int(hp.quniform("batchsize", 32, 128, 32)),
-        "epochs": scope.int(hp.quniform("epochs", 10, 30, 5)),
-        "optimizer": hp.choice("optimizer", ["Adam", "SGD", "RMSprop"]),
+        # "batchsize": scope.int(hp.quniform("batchsize", 32, 128, 32)),
+        # "epochs": scope.int(hp.quniform("epochs", 10, 30, 5)),
+        # "optimizer": hp.choice("optimizer", ["Adam", "SGD", "RMSprop"]),
+        "batchsize": 64,
+        "epochs": 10,
+        "optimizer": "Adam",
     }
 
     # Hyperparameter optimalisatie
