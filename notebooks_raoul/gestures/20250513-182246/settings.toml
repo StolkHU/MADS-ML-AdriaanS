@@ -1,22 +1,18 @@
 [model]
-epochs = 5
+epochs = 200
 metrics = ["Accuracy"]
-logdir = "modellogs"
-train_steps = 937
-valid_steps = 156
-reporttypes = ["ReportTypes.TENSORBOARD", "ReportTypes.TOML"]
+logdir = "gestures"
+train_steps = 81
+valid_steps = 20
+reporttypes = ["ReportTypes.TOML", "ReportTypes.TENSORBOARD", "ReportTypes.MLFLOW"]
+earlystop_kwargs = "None"
 [model.optimizer_kwargs]
 lr = 0.001
 weight_decay = 1e-05
 
 [model.scheduler_kwargs]
-factor = 0.1
-patience = 10
-
-[model.earlystop_kwargs]
-save = false
-verbose = true
-patience = 10
+factor = 0.33
+patience = 20
 
 
 [types]
@@ -28,4 +24,4 @@ valid_steps = "int"
 reporttypes = "list"
 optimizer_kwargs = "dict"
 scheduler_kwargs = "dict"
-earlystop_kwargs = "dict"
+earlystop_kwargs = "NoneType"

@@ -25,6 +25,7 @@ dependencies = [
     "torchsummary>=1.5.1",
     "mlflow>=2.21.3",
     "toml>=0.10.2",
+    "numpy>=2.2.5",
 ]
 
 [project.optional-dependencies]
