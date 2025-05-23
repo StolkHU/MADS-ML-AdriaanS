@@ -1,3 +1,0 @@
-[2025-05-06 05:28:23 PM] update
-
-[2025-05-06 05:31:38 PM] BatchNorm verplaatst en extra dropout toegevoegd

@@ -1,24 +1,17 @@
+from mads_datasets import DatasetFactoryProvider, DatasetType
 from torchvision import transforms
-from torch.utils.data import DataLoader
-from torchvision import datasets
 
 
 class FlowerDataLoader:
-    def __init__(
-        self,
-        batch_size=32,
-        image_size=224,
-        augment=True,
-        resize_size=256,
-        crop_size=224,
-    ):
-        self.batch_size = batch_size
-        self.image_size = image_size
-        self.augment = augment
-        self.resize_size = resize_size
-        self.crop_size = crop_size
+    def __init__(self, config):
+        self.batch_size = config["batch_size"]
+        self.augment = config.get("augment", True)
+        self.resize_size = config.get("resize_size", 256)
+        self.crop_size = config.get("crop_size", 224)
+        self.image_size = config.get("image_size", 224)
 
     def load_data(self):
+        # Transformaties op basis van augmentatie
         if self.augment:
             train_transform = transforms.Compose(
                 [
@@ -46,14 +39,12 @@ class FlowerDataLoader:
             ]
         )
 
-        train_data = datasets.Flowers102(
-            root="./data", split="train", download=True, transform=train_transform
-        )
-        val_data = datasets.Flowers102(
-            root="./data", split="val", download=True, transform=val_transform
+        # Dataset ophalen via mads_datasets
+        flowers_factory = DatasetFactoryProvider.create_factory(DatasetType.FLOWERS)
+        streamers = flowers_factory.create_datastreamer(
+            batchsize=self.batch_size,
+            train_transform=train_transform,
+            val_transform=val_transform,
         )
 
-        train_loader = DataLoader(train_data, batch_size=self.batch_size, shuffle=True)
-        val_loader = DataLoader(val_data, batch_size=self.batch_size, shuffle=False)
-
-        return train_loader, val_loader
+        return streamers.train, streamers.val
