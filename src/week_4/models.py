@@ -93,7 +93,7 @@ class AdriaanTransfer(nn.Module):
         # Laad een voorgetraind ResNet18-model
         self.base_model = models.resnet18(pretrained=True)
 
-        # Vries alle lagen behalve de laatste
+        # Bevries alle lagen behalve de laatste
         for param in self.base_model.parameters():
             param.requires_grad = False
 

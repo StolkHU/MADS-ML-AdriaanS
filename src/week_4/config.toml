@@ -16,3 +16,6 @@ transfer_custom_layers = [1, 2, 3]
 augment = true
 resize_size = 256
 crop_size = 224
+
+[tune]
+num_samples = 20
