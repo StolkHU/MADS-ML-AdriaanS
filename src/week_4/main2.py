@@ -4,7 +4,7 @@ import ray
 from ray import train, tune
 import toml
 from models import AdriaanNet, AdriaanGRU, AdriaanTransfer
-from dataloader import FlowerDataLoader
+from dataloader2 import HymenopteraDataLoader
 
 
 class ModelSearchConfig:
@@ -34,7 +34,7 @@ class ModelSearchConfig:
 
 
 def train_model(config):
-    """Train model met MADS datasets"""
+    """Train model op Hymenoptera dataset"""
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -49,9 +49,9 @@ def train_model(config):
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
 
-        # Load data
-        data_loader = FlowerDataLoader(config)
-        train_streamer, val_streamer = data_loader.load_data()
+        # Load Hymenoptera data
+        data_loader = HymenopteraDataLoader(config)
+        train_loader, val_loader = data_loader.load_data()
 
         # Training
         num_epochs = config.get("epochs", 3)
@@ -61,29 +61,20 @@ def train_model(config):
             correct = 0
             total = 0
 
-            # MADS datasets: gebruik .stream() en next()
-            train_stream = train_streamer.stream()
-            batch_idx = 0
+            # Normale PyTorch DataLoader iteratie
+            for inputs, targets in train_loader:
+                inputs, targets = inputs.to(device), targets.to(device)
 
-            try:
-                while True:
-                    inputs, targets = next(train_stream)
-                    inputs, targets = inputs.to(device), targets.to(device)
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
 
-                    outputs = model(inputs)
-                    loss = criterion(outputs, targets)
-                    optimizer.zero_grad()
-                    loss.backward()
-                    optimizer.step()
-
-                    train_loss += loss.item()
-                    _, predicted = outputs.max(1)
-                    total += targets.size(0)
-                    correct += predicted.eq(targets).sum().item()
-                    batch_idx += 1
-
-            except StopIteration:
-                pass
+                train_loss += loss.item()
+                _, predicted = outputs.max(1)
+                total += targets.size(0)
+                correct += predicted.eq(targets).sum().item()
 
             # Validation
             model.eval()
@@ -92,30 +83,22 @@ def train_model(config):
             val_total = 0
 
             with torch.no_grad():
-                val_stream = val_streamer.stream()
-                try:
-                    while True:
-                        inputs, targets = next(val_stream)
-                        inputs, targets = inputs.to(device), targets.to(device)
-                        outputs = model(inputs)
-                        loss = criterion(outputs, targets)
+                for inputs, targets in val_loader:
+                    inputs, targets = inputs.to(device), targets.to(device)
+                    outputs = model(inputs)
+                    loss = criterion(outputs, targets)
 
-                        val_loss += loss.item()
-                        _, predicted = outputs.max(1)
-                        val_total += targets.size(0)
-                        val_correct += predicted.eq(targets).sum().item()
+                    val_loss += loss.item()
+                    _, predicted = outputs.max(1)
+                    val_total += targets.size(0)
+                    val_correct += predicted.eq(targets).sum().item()
 
-                except StopIteration:
-                    pass
-
-            # Report results
+            # Calculate results
             train_acc = 100.0 * correct / total if total > 0 else 0
             val_acc = 100.0 * val_correct / val_total if val_total > 0 else 0
-            avg_val_loss = (
-                val_loss / len(val_streamer) if len(val_streamer) > 0 else 999.0
-            )
+            avg_val_loss = val_loss / len(val_loader) if len(val_loader) > 0 else 999.0
 
-            print(f"Epoch {epoch + 1}: Train {train_acc:.1f}%, Val {val_acc:.1f}%")
+            print(f"Epoch {epoch + 1}: Train {train_acc:.1f}%, Val {val_acc:.1f}% 🐝🐜")
 
             train.report(
                 {"loss": avg_val_loss, "accuracy": val_acc, "train_accuracy": train_acc}
@@ -123,10 +106,13 @@ def train_model(config):
 
     except Exception as e:
         print(f"Training failed: {e}")
+        train.report({"loss": 999.0, "accuracy": 0.0, "train_accuracy": 0.0})
 
 
 def main():
-    """Main functie met ModelSearchConfig"""
+    """Main functie voor Hymenoptera classificatie"""
+    print("🐝🐜 Starting Hymenoptera (Bees vs Ants) Classification!")
+
     # Ray setup
     if ray.is_initialized():
         ray.shutdown()
@@ -134,21 +120,21 @@ def main():
 
     try:
         # Load config
-        config_file = "config.toml"
+        config_file = "config_hymenoptera.toml"
         with open(config_file, "r") as f:
             full_config = toml.load(f)
 
-        # Gebruik ModelSearchConfig
+        # Setup search space
         search_config = ModelSearchConfig(config_file)
         search_space = search_config.get_search_space()
 
-        # Voeg andere configs toe
+        # Add other configs
         search_space.update(full_config.get("data", {}))
         search_space.update(full_config.get("training", {}))
 
         # Run search
-        num_trials = full_config.get("tune", {}).get("num_samples", 3)
-        experiment_name = full_config.get("experiment", {}).get("name", "flower_search")
+        num_trials = full_config.get("tune", {}).get("num_samples", 5)
+        experiment_name = full_config.get("experiment", {}).get("name", "hymenoptera")
 
         print(f"Starting {num_trials} trials for {experiment_name}...")
 
@@ -165,7 +151,9 @@ def main():
 
         # Results
         if analysis.best_config:
-            print(f"\n🎉 Best accuracy: {analysis.best_result['accuracy']:.2f}%")
+            print(
+                f"\n🎉 Best Bees vs Ants accuracy: {analysis.best_result['accuracy']:.2f}%"
+            )
             print("Best config:")
             for key, value in analysis.best_config.items():
                 print(f"  {key}: {value}")
