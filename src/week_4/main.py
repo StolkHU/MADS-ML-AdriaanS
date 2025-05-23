@@ -3,8 +3,6 @@ import torch.nn as nn
 import ray
 from ray import train, tune
 import toml
-from torchvision import transforms
-from mads_datasets import DatasetFactoryProvider, DatasetType
 from models import AdriaanNet, AdriaanGRU, AdriaanTransfer
 from dataloader import FlowerDataLoader
 
