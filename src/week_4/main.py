@@ -119,11 +119,12 @@ def main():
 
     search_config = ModelSearchConfig(config_file)
     search_space = search_config.get_search_space()
+    num_samples = full_config.get("tune", {}).get("num_samples", 10)
 
     analysis = tune.run(
         train_model,
         config=search_space,
-        num_samples=20,
+        num_samples=num_samples,
         metric="accuracy",
         mode="max",
         verbose=1,
