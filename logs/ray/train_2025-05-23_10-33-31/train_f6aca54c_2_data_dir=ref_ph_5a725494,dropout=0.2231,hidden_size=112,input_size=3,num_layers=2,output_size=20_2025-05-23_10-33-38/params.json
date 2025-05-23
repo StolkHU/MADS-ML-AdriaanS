@@ -1,0 +1,8 @@
+{
+  "data_dir": "/home/azureuser/MADS-ML-AdriaanS/data/raw/gestures/gestures-dataset",
+  "dropout": 0.22314079203241916,
+  "hidden_size": 112,
+  "input_size": 3,
+  "num_layers": 2,
+  "output_size": 20
+}

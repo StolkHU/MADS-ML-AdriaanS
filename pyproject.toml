@@ -17,7 +17,7 @@ dependencies = [
     "torch>=2.0.1",
     "torch-tb-profiler>=0.4.3",
     "tomlserializer>=0.2.0",
-    "mltrainer>=0.2.2",
+    "mltrainer>=0.2.4",
     "jrnl>=4.2.1",
     "torchinfo>=1.8.0",
     "hyperopt>=0.2.7",
@@ -26,6 +26,8 @@ dependencies = [
     "mlflow>=2.21.3",
     "toml>=0.10.2",
     "numpy>=2.2.5",
+    "requests>=2.32.3",
+    "ray>=2.44.1",
 ]
 
 [project.optional-dependencies]
