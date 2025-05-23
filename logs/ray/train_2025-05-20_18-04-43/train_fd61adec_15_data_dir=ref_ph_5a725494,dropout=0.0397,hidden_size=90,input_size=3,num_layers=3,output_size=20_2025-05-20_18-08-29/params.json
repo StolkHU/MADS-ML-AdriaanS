@@ -1,8 +1,0 @@
-{
-  "data_dir": "/home/azureuser/MADS-ML-AdriaanS/data/raw/flowers/flowers-dataset",
-  "dropout": 0.039745592805952946,
-  "hidden_size": 90,
-  "input_size": 3,
-  "num_layers": 3,
-  "output_size": 20
-}
