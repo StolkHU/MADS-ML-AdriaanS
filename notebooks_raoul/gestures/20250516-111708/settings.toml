@@ -1,0 +1,27 @@
+[model]
+epochs = 100
+metrics = ["Accuracy"]
+logdir = "gestures"
+train_steps = 81
+valid_steps = 20
+reporttypes = ["ReportTypes.TOML", "ReportTypes.TENSORBOARD", "ReportTypes.MLFLOW"]
+earlystop_kwargs = "None"
+[model.optimizer_kwargs]
+lr = 0.001
+weight_decay = 1e-05
+
+[model.scheduler_kwargs]
+factor = 0.2
+patience = 10
+
+
+[types]
+epochs = "int"
+metrics = "list"
+logdir = "PosixPath"
+train_steps = "int"
+valid_steps = "int"
+reporttypes = "list"
+optimizer_kwargs = "dict"
+scheduler_kwargs = "dict"
+earlystop_kwargs = "NoneType"

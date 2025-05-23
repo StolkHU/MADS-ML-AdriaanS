@@ -1,0 +1,7 @@
+[model]
+training = true
+config = "ModelConfig(input_size=3, hidden_size=64, num_layers=1, output_size=20, dropout=0.1)"
+
+[types]
+training = "bool"
+config = "ModelConfig"

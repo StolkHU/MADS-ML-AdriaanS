@@ -1,0 +1,13 @@
+[model]
+training = true
+input_size = 3
+hidden_size = 64
+num_layers = 1
+horizon = 20
+
+[types]
+training = "bool"
+input_size = "int"
+hidden_size = "int"
+num_layers = "int"
+horizon = "int"

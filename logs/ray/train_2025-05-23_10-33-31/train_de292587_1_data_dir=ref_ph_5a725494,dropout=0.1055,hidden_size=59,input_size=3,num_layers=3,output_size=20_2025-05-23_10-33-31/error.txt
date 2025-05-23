@@ -1,0 +1,42 @@
+Failure # 1 (occurred at 2025-05-23_10-34-01)
+[36mray::ImplicitFunc.train()[39m (pid=24805, ip=10.0.0.10, actor_id=2169b663250c450d04b0fa9b01000000, repr=train)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 330, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/air/_internal/util.py", line 107, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/function_trainable.py", line 261, in _trainable_func
+    output = fn()
+             ^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/notebooks_raoul/hypertune.py", line 86, in train
+    trainer.loop()
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/mltrainer/trainer.py", line 95, in loop
+    train_loss = self.trainbatches()
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/mltrainer/trainer.py", line 124, in trainbatches
+    yhat = self.model(x)
+           ^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/mltrainer/rnn_models.py", line 72, in forward
+    x, _ = self.rnn(x)
+           ^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/torch/nn/modules/rnn.py", line 1356, in forward
+    raise ValueError(
+ValueError: GRU: Expected input to be 2D or 3D, got 4D instead

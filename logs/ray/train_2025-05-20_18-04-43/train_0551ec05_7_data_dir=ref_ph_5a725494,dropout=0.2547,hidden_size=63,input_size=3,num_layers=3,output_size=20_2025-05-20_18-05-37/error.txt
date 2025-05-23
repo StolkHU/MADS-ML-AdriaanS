@@ -1,0 +1,20 @@
+Failure # 1 (occurred at 2025-05-20_18-06-35)
+[36mray::ImplicitFunc.train()[39m (pid=15517, ip=10.0.0.10, actor_id=b93223c66b9009bed4c1ab7201000000, repr=train)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 330, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/air/_internal/util.py", line 107, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/function_trainable.py", line 45, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/.venv/lib/python3.11/site-packages/ray/tune/trainable/function_trainable.py", line 261, in _trainable_func
+    output = fn()
+             ^^^^
+  File "/home/azureuser/MADS-ML-AdriaanS/src/week_4/hypertuning.py", line 44, in train
+    model = rnn_models.BaseRNN(modelconfig)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: BaseRNN.__init__() missing 3 required positional arguments: 'hidden_size', 'num_layers', and 'horizon'
