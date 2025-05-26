@@ -1,16 +1,16 @@
 [experiment]
-name = "hymenoptera_classification"
+name = "hymenoptera_classification_transfer_zoom"
 
 [model]
 model_type = ["cnn"]
-hidden_size = [32, 64, 128]
-num_layers = [1, 2, 3]
-dropout = [0.1, 0.4]
-lr = [1e-4, 1e-2]
-batch_size = [8, 16, 32]
+hidden_size = [16, 32, 64] #verkleind op basis van vorige experimenten
+num_layers = [3] #verkleind obv vorige experimenten
+dropout = [0.2, 0.5]
+lr = [1e-4, 1e-3]
+batch_size = [4, 8, 16] #klein vanwege grootte
 num_classes = 2  # Bees vs Ants!
 image_size = 224
-transfer_custom_layers = [1, 2, 3]
+transfer_custom_layers = [1, 2]
 
 [data]
 augment = true
@@ -18,8 +18,10 @@ resize_size = 256
 crop_size = 224
 
 [training]
-epochs = 5
-print_every = 10
+epochs = 20  
+patience = 5  # Stop na 5 epochs zonder verbetering
+scheduler_step = 3  # Verlaag learning rate elke 3 epochs
+scheduler_gamma = 0.5  # Halveer learning rate
 
 [tune]
 num_samples = 10

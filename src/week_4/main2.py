@@ -3,6 +3,7 @@ import torch.nn as nn
 import ray
 from ray import train, tune
 import toml
+import pandas as pd
 from models import AdriaanNet, AdriaanGRU, AdriaanTransfer
 from dataloader2 import HymenopteraDataLoader
 
@@ -34,7 +35,7 @@ class ModelSearchConfig:
 
 
 def train_model(config):
-    """Train model op Hymenoptera dataset"""
+    """Train model met learning rate scheduler en early stopping"""
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -49,22 +50,30 @@ def train_model(config):
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
 
-        # Load Hymenoptera data
+        scheduler = torch.optim.lr_scheduler.StepLR(
+            optimizer,
+            step_size=config.get("scheduler_step", 3),  # Elke 3 epochs
+            gamma=config.get("scheduler_gamma", 0.5),  # Halveer learning rate
+        )
+
+        best_val_acc = 0.0
+        patience = config.get("patience", 5)  # Stop na 5 epochs zonder verbetering
+        patience_counter = 0
+
+        # Load data
         data_loader = HymenopteraDataLoader(config)
         train_loader, val_loader = data_loader.load_data()
 
-        # Training
-        num_epochs = config.get("epochs", 3)
+        # Training loop
+        num_epochs = config.get("epochs", 10)
         for epoch in range(num_epochs):
             model.train()
             train_loss = 0
             correct = 0
             total = 0
 
-            # Normale PyTorch DataLoader iteratie
             for inputs, targets in train_loader:
                 inputs, targets = inputs.to(device), targets.to(device)
-
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
                 optimizer.zero_grad()
@@ -98,45 +107,59 @@ def train_model(config):
             val_acc = 100.0 * val_correct / val_total if val_total > 0 else 0
             avg_val_loss = val_loss / len(val_loader) if len(val_loader) > 0 else 999.0
 
-            print(f"Epoch {epoch + 1}: Train {train_acc:.1f}%, Val {val_acc:.1f}% 🐝🐜")
+            scheduler.step()
+            current_lr = optimizer.param_groups[0]["lr"]
 
+            if val_acc > best_val_acc:
+                best_val_acc = val_acc
+                patience_counter = 0  # Reset counter als er verbetering is
+                print(f"Epoch {epoch + 1}: Nieuwe beste accuracy: {val_acc:.2f}%")
+            else:
+                patience_counter += 1
+                print(
+                    f"Epoch {epoch + 1}: Geen verbetering ({patience_counter}/{patience})"
+                )
+
+            # Report to Ray Tune
             train.report(
-                {"loss": avg_val_loss, "accuracy": val_acc, "train_accuracy": train_acc}
+                {
+                    "loss": avg_val_loss,
+                    "accuracy": val_acc,
+                    "train_accuracy": train_acc,
+                    "learning_rate": current_lr,
+                    "epoch": epoch + 1,
+                }
             )
 
+            if patience_counter >= patience:
+                print(f"Early stopping! Geen verbetering na {patience} epochs.")
+                print(f"Beste accuracy was: {best_val_acc:.2f}%")
+                break
+
     except Exception as e:
-        print(f"Training failed: {e}")
+        print(f"Error tijdens training: {e}")
         train.report({"loss": 999.0, "accuracy": 0.0, "train_accuracy": 0.0})
 
 
 def main():
-    """Main functie voor Hymenoptera classificatie"""
-    print("🐝🐜 Starting Hymenoptera (Bees vs Ants) Classification!")
-
-    # Ray setup
     if ray.is_initialized():
         ray.shutdown()
-    ray.init(ignore_reinit_error=True)
+
+    ray.init(ignore_reinit_error=True, dashboard_host="0.0.0.0", dashboard_port=8265)
 
     try:
-        # Load config
         config_file = "config_hymenoptera.toml"
         with open(config_file, "r") as f:
             full_config = toml.load(f)
 
-        # Setup search space
         search_config = ModelSearchConfig(config_file)
         search_space = search_config.get_search_space()
 
-        # Add other configs
         search_space.update(full_config.get("data", {}))
         search_space.update(full_config.get("training", {}))
 
-        # Run search
         num_trials = full_config.get("tune", {}).get("num_samples", 5)
         experiment_name = full_config.get("experiment", {}).get("name", "hymenoptera")
-
-        print(f"Starting {num_trials} trials for {experiment_name}...")
 
         analysis = tune.run(
             train_model,
@@ -149,19 +172,27 @@ def main():
             resources_per_trial={"cpu": 1, "gpu": 0},
         )
 
-        # Results
-        if analysis.best_config:
-            print(
-                f"\n🎉 Best Bees vs Ants accuracy: {analysis.best_result['accuracy']:.2f}%"
-            )
-            print("Best config:")
-            for key, value in analysis.best_config.items():
-                print(f"  {key}: {value}")
-        else:
-            print("❌ No successful trials")
+        if analysis.trials:
+            results_data = []
 
-    except Exception as e:
-        print(f"Error: {e}")
+            for trial in analysis.trials:
+                if trial.last_result:
+                    row = {
+                        "trial_id": trial.trial_id,
+                        "accuracy": trial.last_result.get("accuracy", 0),
+                        "loss": trial.last_result.get("loss", 999),
+                        "train_accuracy": trial.last_result.get("train_accuracy", 0),
+                    }
+                    row.update(trial.config)
+                    results_data.append(row)
+
+            df = pd.DataFrame(results_data)
+            df = df.sort_values("accuracy", ascending=False)
+
+            csv_filename = f"{experiment_name}_results.csv"
+            df.to_csv(csv_filename, index=False)
+
+    except Exception:
         import traceback
 
         traceback.print_exc()

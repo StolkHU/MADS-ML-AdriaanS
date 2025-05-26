@@ -13,35 +13,42 @@ class AdriaanNet(nn.Module):
 
         # Store config for easy access
         self.config = config
+        hidden_size = config["hidden_size"]
+        num_layers = config["num_layers"]
+        growth_factor = config.get("growth_factor", 2.0)
+        max_channels = config.get("max_channels", 256)
 
-        # First layer: always from image to hidden size
-        layers = [
-            nn.Conv2d(3, config["hidden_size"], kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-        ]
+        layers = []
+        in_channels = 3
+        current_size = hidden_size
 
-        # Add more conv layers based on config
-        current_size = config["hidden_size"]
-        for i in range(config["num_layers"] - 1):
+        for i in range(num_layers):
+            # Calculate output channels with growth limit
+            if i == 0:
+                out_channels = hidden_size
+            else:
+                # Groei met factor, maar respecteer maximum
+                out_channels = min(int(current_size * growth_factor), max_channels)
+
             layers.extend(
                 [
-                    nn.Conv2d(current_size, current_size * 2, kernel_size=3, padding=1),
+                    nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
                     nn.ReLU(),
                     nn.MaxPool2d(2),
                 ]
             )
-            current_size = current_size * 2
+
+            in_channels = out_channels
+            current_size = out_channels
 
         self.features = nn.Sequential(*layers)
 
-        # Calculate size after convolutions
-        # Use the actual image size from config
+        # Calculate flattened size
         image_size = config.get("image_size", 64)
-        final_size = image_size // (2 ** config["num_layers"])
+        final_size = image_size // (2**num_layers)
         flat_features = current_size * final_size * final_size
 
-        # Classification head
+        # Classifier
         self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Linear(flat_features, 128),
